@@ -1,3 +1,2 @@
 node_modules
-.env.prod
-README.md
+.env.dev
