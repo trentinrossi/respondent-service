@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Respondent = require('./model/Respondent');
-const respondentRoutes = require('./routes/respondent');
+const respondentRoutes = require('./routes/respondentRoutes');
 require('dotenv').config();
 
 const app = express();
