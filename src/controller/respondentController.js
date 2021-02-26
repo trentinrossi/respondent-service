@@ -1,21 +1,23 @@
 const Respondent = require('../model/Respondent');
 
+async function validateEmail(email) {
+  return await Respondent.findOne({ email }).then((resp) => {
+    return resp;
+  });
+}
+
+function getByEmail(req, res) {
+  Respondent.findOne({ email: req.params.email }).then((resp) => {
+    res.status(200).json(resp);
+  });
+}
+
 function getAll(req, res) {
   Respondent.find()
     .then((resp) => {
       res.status(200).json(resp);
     })
     .catch((err) => res.status(400).json(err));
-}
-
-function getByEmail(req, res) {
-  Respondent.findOne({ email: req.params.email }).then((retRespondent) => {
-    if (retRespondent === null) {
-      res.status(400).json({ error: 'Respondent not found' });
-    } else {
-      res.status(200).json(retRespondent);
-    }
-  });
 }
 
 function insert(req, res) {
@@ -60,33 +62,22 @@ function insert(req, res) {
 }
 
 function update(req, res) {
-  Respondent.findOne({ email: req.params.email }).then((retRespondent) => {
-    if (retRespondent === null) {
-      res.status(400).json({ error: 'Respondent not found' });
-    } else {
-      // TODO: Implementar uma forma de não atualizar/permitir atualizar o e-mail do respondente
-      Respondent.updateOne({ email: req.params.email }, { $set: req.body })
-        .then((resp) => res.status(200).json(resp))
-        .catch((err) => res.status(400).json(err));
-    }
-  });
+  // TODO: Implementar uma forma de não atualizar/permitir atualizar o e-mail do respondente
+  Respondent.updateOne({ email: req.params.email }, { $set: req.body })
+    .then((resp) => res.status(200).json(resp))
+    .catch((err) => res.status(400).json(err));
 }
 
 function remove(req, res) {
-  Respondent.findOne({ email: req.params.email }).then((retRespondent) => {
-    if (retRespondent === null) {
-      res.status(400).json({ error: 'Respondent not found' });
-    } else {
-      Respondent.remove({ email: req.params.email })
-        .then((resp) => res.status(200).json(resp))
-        .catch((err) => res.status(400).json(err));
-    }
-  });
+  Respondent.remove({ email: req.params.email })
+    .then((resp) => res.status(200).json(resp))
+    .catch((err) => res.status(400).json(err));
 }
 
 module.exports = {
   getAll,
   getByEmail,
+  validateEmail,
   insert,
   update,
   remove,

@@ -1,12 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const Respondent = require('../model/Respondent');
 const RespondenController = require('../controller/respondentController');
 
+/**
+ * Validate if e-mail already exists in database
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
+const validateEmailExists = async (req, res, next) => {
+  const { email } = req.params;
+
+  const respondent = await RespondenController.validateEmail(email);
+  if (!respondent) {
+    next({
+      code: 10404,
+      message: `Respondent not found by given email: ${email}`,
+      moreInfo: ``,
+      status: 404,
+    });
+  }
+
+  next();
+};
+
 router.get('/', RespondenController.getAll);
-router.get('/:email', RespondenController.getByEmail);
+router.get('/:email', validateEmailExists, RespondenController.getByEmail);
 router.post('/', RespondenController.insert);
-router.patch('/:email', RespondenController.update);
-router.delete('/:email', RespondenController.remove);
+router.patch('/:email', validateEmailExists, RespondenController.update);
+router.delete('/:email', validateEmailExists, RespondenController.remove);
 
 module.exports = router;

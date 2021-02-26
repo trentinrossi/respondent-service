@@ -1,6 +1,7 @@
 const { config } = require('dotenv');
 const { ok } = require('assert');
 const { join } = require('path');
+const { handleError } = require('./helpers/errorHandler');
 
 const env = process.env.NODE_ENV || 'dev';
 ok(env === 'prod' || env === 'dev', 'Invalid environment');
@@ -12,7 +13,6 @@ config({
 
 const express = require('express');
 const mongoose = require('mongoose');
-const Respondent = require('./model/Respondent');
 const respondentRoutes = require('./routes/respondentRoutes');
 
 const app = express();
@@ -20,6 +20,10 @@ const port = process.env.PORT || process.env.SERVICE_PORT;
 
 app.use(express.json());
 app.use('/respondent', respondentRoutes);
+
+app.use((err, req, res, next) => {
+  handleError(err, res);
+});
 
 app.listen(port, '0.0.0.0');
 
