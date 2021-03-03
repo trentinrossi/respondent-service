@@ -244,6 +244,7 @@ describe('Respondent API test suite', () => {
 
     it('It should UPDATE a respondent', (done) => {
       const datSis = new Date().toISOString();
+      const datZer = new Date('1970-01-01T00:00:00');
 
       let respondent = new Respondent({
         identifier: '320942384093284',
@@ -283,6 +284,9 @@ describe('Respondent API test suite', () => {
             workstationId: '223.22233',
             workstationName: 'Vendas II',
             positionName: 'Analista de Compras Jr',
+            admissionDate: datSis,
+            dismissalDate: datSis,
+            visitDate: datZer,
           })
           .end((err, res) => {
             // console.log(res.res);
@@ -321,7 +325,7 @@ describe('Respondent API test suite', () => {
             res.body.workstationId.should.equal('223.22233');
             res.body.workstationName.should.equal('Vendas II');
             res.body.positionName.should.equal('Analista de Compras Jr');
-            // res.body.dismissalDate.should.equal('nulls');
+            res.body.dismissalDate.should.equal(datSis);
             res.body.dismissalCause.should.equal('');
             res.body.companyId.should.equal(5545);
             res.body.companyName.should.equal(
@@ -329,7 +333,7 @@ describe('Respondent API test suite', () => {
             );
             res.body.branchId.should.equal(1);
             res.body.branchName.should.equal('Filial Matriz');
-            // res.body.visitDate.should.equal('null');
+            res.body.visitDate.should.equal('1970-01-01T03:00:00.000Z');
             res.body.visitDescription.should.equal('');
             done();
           });

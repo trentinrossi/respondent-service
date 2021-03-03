@@ -2,6 +2,7 @@ const { config } = require('dotenv');
 const { ok } = require('assert');
 const { join } = require('path');
 const { handleError } = require('./helpers/errorHandler');
+const bodyParser = require('body-parser');
 
 const env = process.env.NODE_ENV || 'dev';
 ok(env === 'prod' || env === 'dev', 'Invalid environment');
@@ -18,9 +19,15 @@ const respondentRoutes = require('./routes/respondentRoutes');
 const app = express();
 const port = process.env.PORT || process.env.SERVICE_PORT;
 
+// Middlewares
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Routes
 app.use('/respondent', respondentRoutes);
 
+// Handlers Middlewares
 app.use((err, req, res, next) => {
   handleError(err, res);
 });

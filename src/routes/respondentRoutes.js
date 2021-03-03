@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const RespondenController = require('../controller/respondentController');
+const { body, validationResult } = require('express-validator');
 
 /**
  * Validate if e-mail already exists in database
@@ -24,6 +25,21 @@ const validateEmailExists = async (req, res, next) => {
 
   next();
 };
+
+router.all('*', (req, res, next) => {
+  console.log('Logou');
+  body('email').isEmail().normalizeEmail();
+
+  // If is necessary to manipulate dates
+  // body([
+  //   'admissionDate',
+  //   'expContractExpiration',
+  //   'dismissalDate',
+  //   'visitDate',
+  // ]);
+
+  next();
+});
 
 router.get('/', RespondenController.getAll);
 router.get('/:email', validateEmailExists, RespondenController.getByEmail);
