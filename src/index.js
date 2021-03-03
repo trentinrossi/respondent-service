@@ -36,3 +36,5 @@ mongoose
   .catch((err) => console.error(err));
 
 console.log(`Running on port ${port}`);
+
+module.exports = app; // Only to use in tests

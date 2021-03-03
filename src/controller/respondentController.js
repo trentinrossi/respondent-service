@@ -17,10 +17,17 @@ function getAll(req, res) {
     .then((resp) => {
       res.status(200).json(resp);
     })
-    .catch((err) => res.status(400).json(err));
+    .catch((err) =>
+      next({
+        code: 10402,
+        status: 400,
+        message: err._message,
+        moreInfo: err.errors,
+      })
+    );
 }
 
-function insert(req, res) {
+function insert(req, res, next) {
   Respondent.findOne({ email: req.body.email }).then((retRespontend) => {
     if (retRespontend === null) {
       const respondentData = ({
@@ -53,25 +60,61 @@ function insert(req, res) {
         .save()
         .then((resp) => res.status(201).json(resp))
         .catch((err) =>
-          res.status(400).json({ error: `Error to insert respondent: ${err}` })
+          next({
+            code: 10400,
+            status: 400,
+            message: err._message,
+            moreInfo: err.errors,
+          })
         );
     } else {
-      res.status(400).json({ error: 'Respondent already exists' });
+      next({
+        code: 10401,
+        status: 400,
+        message: `Respondent already exists by given e-mail: ${req.body.email}`,
+        moreInfo: ``,
+      });
     }
   });
 }
 
-function update(req, res) {
-  // TODO: Implementar uma forma de não atualizar/permitir atualizar o e-mail do respondente
+function update(req, res, next) {
+  if (req.body.email && req.params.email !== req.body.email) {
+    next({
+      code: 10403,
+      status: 400,
+      message: `It's not allowed to change the e-mail address of a registered respondent.`,
+      moreInfo: `For do this, you need to create a new account.`,
+    });
+  }
+  
   Respondent.updateOne({ email: req.params.email }, { $set: req.body })
-    .then((resp) => res.status(200).json(resp))
-    .catch((err) => res.status(400).json(err));
+    .then((resp) => {
+      Respondent.findOne({ email: req.params.email }).then((resp) => {
+        res.status(200).json(resp);
+      });
+    })
+    .catch((err) =>
+      next({
+        code: 10402,
+        status: 400,
+        message: err._message,
+        moreInfo: err.errors,
+      })
+    );
 }
 
 function remove(req, res) {
   Respondent.remove({ email: req.params.email })
-    .then((resp) => res.status(200).json(resp))
-    .catch((err) => res.status(400).json(err));
+    .then((resp) => res.status(200).json())
+    .catch((err) =>
+      next({
+        code: 10405,
+        status: 400,
+        message: err._message,
+        moreInfo: err.errors,
+      })
+    );
 }
 
 module.exports = {

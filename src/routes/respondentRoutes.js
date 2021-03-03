@@ -16,9 +16,9 @@ const validateEmailExists = async (req, res, next) => {
   if (!respondent) {
     next({
       code: 10404,
-      message: `Respondent not found by given email: ${email}`,
-      moreInfo: ``,
       status: 404,
+      message: `Respondent not found by given email: ${email}`,
+      moreInfo: `Please, inform the correct e-mail`,
     });
   }
 
