@@ -13,8 +13,13 @@ function getByEmail(req, res) {
 }
 
 function getAll(req, res) {
+  console.log(req.offset);
+  console.log(req.limit);
   Respondent.find()
+    .skip(req.offset)
+    .limit(req.limit)
     .then((resp) => {
+      console.log(resp);
       res.status(200).json(resp);
     })
     .catch((err) =>
@@ -87,7 +92,7 @@ function update(req, res, next) {
       moreInfo: `For do this, you need to create a new account.`,
     });
   }
-  
+
   Respondent.updateOne({ email: req.params.email }, { $set: req.body })
     .then((resp) => {
       Respondent.findOne({ email: req.params.email }).then((resp) => {

@@ -8,5 +8,3 @@ docker build . -t rodrigotrentinrossi/respondent-service:latest
 
 
 // TODO
-Fazer uma formatação global de datas
-Terminar os testes unitarios

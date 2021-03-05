@@ -19,15 +19,14 @@ const validateEmailExists = async (req, res, next) => {
       code: 10404,
       status: 404,
       message: `Respondent not found by given email: ${email}`,
-      moreInfo: `Please, inform the correct e-mail`,
+      moreInfo: `Please, inform the correct e-mail`,      
     });
   }
 
-  next();
+  next();  
 };
 
-router.all('*', (req, res, next) => {
-  console.log('Logou');
+router.all('*', (req, res, next) => {  
   body('email').isEmail().normalizeEmail();
 
   // If is necessary to manipulate dates
@@ -41,7 +40,19 @@ router.all('*', (req, res, next) => {
   next();
 });
 
-router.get('/', RespondenController.getAll);
+const pagination = async (req, res, next) => {
+  let { offset, limit } = req.query;
+
+  // if (!offset) offset = 0;
+  // if (!limit) limit = 500;
+
+  req.offset = parseInt(offset) || 0;
+  req.limit = parseInt(limit) || 500;
+
+  next();
+};
+
+router.get('/', pagination, RespondenController.getAll);
 router.get('/:email', validateEmailExists, RespondenController.getByEmail);
 router.post('/', RespondenController.insert);
 router.patch('/:email', validateEmailExists, RespondenController.update);
