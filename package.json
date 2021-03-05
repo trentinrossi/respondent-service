@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "test": "mocha './test/**/*test.js' --timeout 10000",
+    "test": "mocha './src/features/**/**.test.js' --timeout 10000",
     "dev": "nodemon ./src/index.js"
   },
   "keywords": [

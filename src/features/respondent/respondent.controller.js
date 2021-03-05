@@ -1,4 +1,4 @@
-const Respondent = require('../model/Respondent');
+const Respondent = require('./respondent.model');
 
 async function validateEmail(email) {
   return await Respondent.findOne({ email }).then((resp) => {

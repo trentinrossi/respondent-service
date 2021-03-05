@@ -1,7 +1,7 @@
 // let mongoose = require('mongoose');
-let Respondent = require('../src/model/Respondent');
+let Respondent = require('./respondent.model');
 
-let server = require('../src/index');
+let server = require('../../index');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 

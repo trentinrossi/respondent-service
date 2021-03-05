@@ -1,7 +1,7 @@
 const { config } = require('dotenv');
 const { ok } = require('assert');
 const { join } = require('path');
-const { handleError } = require('./helpers/errorHandler');
+const { handleError } = require('./_shared/handlers/errorHandler');
 const bodyParser = require('body-parser');
 
 const env = process.env.NODE_ENV || 'dev';
@@ -14,7 +14,7 @@ config({
 
 const express = require('express');
 const mongoose = require('mongoose');
-const respondentRoutes = require('./routes/respondentRoutes');
+const respondentRoutes = require('./features/respondent/respondent.routes');
 
 const app = express();
 const port = process.env.PORT || process.env.SERVICE_PORT;
