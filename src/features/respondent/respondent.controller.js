@@ -1,4 +1,26 @@
 const Respondent = require('./respondent.model');
+const service = require('./respondent.service');
+
+async function list(req, res) {
+  try {
+    let { offset, limit } = req.query;
+
+    offset = parseInt(offset) || 0;
+    limit = parseInt(limit) || 500;
+
+    const results = await service.list({ offset, limit });
+
+    res.status(200).json(results);
+    // return onSuccess(clients.meta, clients.data, ctx);
+  } catch (err) {
+    next({
+      code: 10402,
+      status: 400,
+      message: err._message,
+      moreInfo: err.errors,
+    });
+  }
+}
 
 async function validateEmail(email) {
   return await Respondent.findOne({ email }).then((resp) => {
@@ -123,6 +145,7 @@ function remove(req, res) {
 }
 
 module.exports = {
+  list,
   getAll,
   getByEmail,
   validateEmail,
