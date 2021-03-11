@@ -25,8 +25,9 @@ describe('Respondent API test suite', () => {
         .get('/respondent')
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('array');
-          res.body.length.should.be.eql(0);
+          res.body.should.have.property('data');
+          res.body.should.have.property('meta');
+          res.body.data.should.be.a('array');          
           done();
         });
     });
