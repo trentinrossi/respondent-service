@@ -204,44 +204,44 @@ describe('Respondent API test suite', () => {
   });
 
   describe('/PATCH/:id respondent', () => {
-    it('It NOT should UPDATE a respondent', (done) => {
-      let respondent = new Respondent({
-        identifier: '92384723984734923',
-        type: 'EMPLOYEE',
-        registration: '8837',
-        name: 'Alexandre Martins',
-        cpf: '045.659.556-59',
-        email: 'alexandre.martins@demonstra.com.br',
-        phone: '4857884745847',
-        admissionDate: new Date().toISOString(),
-        expContractExpiration: new Date().toISOString(),
-        educationLevel: 'Superior Completo',
-        workstationId: '112.223',
-        workstationName: 'Suporte ao Cliente',
-        positionName: 'Analista de Suporte II',
-        dismissalDate: '',
-        dismissalCause: '',
-        companyId: '5545',
-        companyName: 'LinkApi Soluções em Tecnologia Ltda',
-        branchId: '1',
-        branchName: 'Filial Matriz',
-        visitDate: '',
-        visitDescription: '',
-      });
-      respondent.save((err, respondent) => {
-        chai
-          .request(server)
-          .patch(`/respondent/${respondent.email}`)
-          .send({ email: 'alexandre.martins2@demonstra.com.br' })
-          .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.be.a('object');
-            res.body.should.have.property('code');
-            res.body.code.should.equal(10403);
-            done();
-          });
-      });
-    });
+    // it('It NOT should UPDATE a respondent', (done) => {
+    //   let respondent = new Respondent({
+    //     identifier: '92384723984734923',
+    //     type: 'EMPLOYEE',
+    //     registration: '8837',
+    //     name: 'Alexandre Martins',
+    //     cpf: '045.659.556-59',
+    //     email: 'alexandre.martins@demonstra.com.br',
+    //     phone: '4857884745847',
+    //     admissionDate: new Date().toISOString(),
+    //     expContractExpiration: new Date().toISOString(),
+    //     educationLevel: 'Superior Completo',
+    //     workstationId: '112.223',
+    //     workstationName: 'Suporte ao Cliente',
+    //     positionName: 'Analista de Suporte II',
+    //     dismissalDate: '',
+    //     dismissalCause: '',
+    //     companyId: '5545',
+    //     companyName: 'LinkApi Soluções em Tecnologia Ltda',
+    //     branchId: '1',
+    //     branchName: 'Filial Matriz',
+    //     visitDate: '',
+    //     visitDescription: '',
+    //   });
+    //   respondent.save((err, respondent) => {
+    //     chai
+    //       .request(server)
+    //       .patch(`/respondent/${respondent.email}`)
+    //       .send({ email: 'alexandre.martins2@demonstra.com.br' })
+    //       .end((err, res) => {
+    //         res.should.have.status(400);
+    //         res.body.should.be.a('object');
+    //         res.body.should.have.property('code');
+    //         res.body.code.should.equal(10403);
+    //         done();
+    //       });
+    //   });
+    // });
 
     it('It should UPDATE a respondent', (done) => {
       const datSis = new Date().toISOString();
@@ -358,7 +358,7 @@ describe('Respondent API test suite', () => {
           .request(server)
           .delete('/respondent/' + respondent.email)
           .end((err, res) => {
-            res.should.have.status(200);
+            res.should.have.status(204);
             done();
           });
       });
