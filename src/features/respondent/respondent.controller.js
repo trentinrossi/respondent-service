@@ -5,12 +5,12 @@ const service = require('./respondent.service');
 class RespondentController {
   async list(req, res, next) {
     try {
-      let { offset, limit } = req.query;
+      let { query } = req;
 
-      offset = parseInt(offset) || 0;
-      limit = parseInt(limit) || 500;
+      query.offset = parseInt(query.offset) || 0;
+      query.limit = parseInt(query.limit) || 500;
 
-      const results = await service.list({ offset, limit });
+      const results = await service.list(query);
 
       res.status(200).json(results);
     } catch (err) {
