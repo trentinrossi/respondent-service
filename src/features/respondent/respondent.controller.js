@@ -134,6 +134,20 @@ class RespondentController {
       });
     }
   }
+
+  async removeAll(req, res, next) {
+    try {      
+      await service.deleteAll();
+      res.status(204).json();
+    } catch (err) {
+      next({
+        code: 10405,
+        status: 400,
+        message: err._message,
+        moreInfo: err.errors,
+      });
+    }
+  }
 }
 
 module.exports = new RespondentController();

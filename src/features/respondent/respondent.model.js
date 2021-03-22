@@ -32,7 +32,7 @@ const respondentSchema = new Schema(
     visitDate: { type: Date, default: new Date('1970-01-01T00:00:00') },
     visitDescription: { type: String },
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 module.exports = mongoose.model('Respondent', respondentSchema);

@@ -30,6 +30,10 @@ class RespondentService {
   async delete(email) {
     return repository.delete(email);
   }
+
+  async deleteAll() {
+    return repository.deleteAll();
+  }
 }
 
 module.exports = new RespondentService();

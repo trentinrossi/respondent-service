@@ -28,6 +28,10 @@ class RespondentRepository {
   delete(email) {
     return Respondent.deleteOne({ email });
   }
+
+  deleteAll() {
+    return Respondent.deleteMany();
+  }
 }
 
 module.exports = new RespondentRepository();

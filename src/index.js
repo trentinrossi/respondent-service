@@ -15,6 +15,8 @@ config({
 const express = require('express');
 const mongoose = require('mongoose');
 const respondentRoutes = require('./features/respondent/respondent.routes');
+const faker = require('faker');
+const { fake } = require('faker');
 
 const app = express();
 const port = process.env.PORT || process.env.SERVICE_PORT;
@@ -41,6 +43,42 @@ mongoose
   })
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error(err));
+
+  // Inserting fake data in mongo database for tests
+  if (env === 'dev') {
+    console.log('Inserting fake data in mongo...');
+    faker.locale = 'pt_BR';
+    const Respondent = require('./features/respondent/respondent.model');
+    const service = require('./features/respondent/respondent.service');    
+
+    // service.deleteAll();
+
+    for (let index = 0; index < 1000; index++) {
+      const respondent = new Respondent({
+        identifier: faker.random.number(),
+        type: faker.random.arrayElement(['EMPLOYEE', 'CANDIDATE', 'INTERN', 'VISITOR'],1),
+        registration: faker.random.number(5000),
+        name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        cpf: faker.random.cpf(true),
+        email: faker.internet.email(),
+        phone: faker.phone.phoneNumber(),
+        admissionDate: faker.date.past(),
+        expContractExpiration: faker.date.past(),
+        educationLevel: faker.name.jobDescriptor(),
+        workstationId: faker.random.number(),
+        workstationName: faker.name.jobArea(),
+        positionName: faker.name.jobTitle(),
+        companyId: faker.random.number(),
+        companyName: faker.company.companyName(),
+        branchId: faker.random.number(),
+        branchName: faker.company.companySuffix(),
+        visitDate: faker.date.past(),
+        visitDescription: faker.lorem.sentence()    
+      })
+      
+      service.insert(respondent);
+    }    
+  }
 
 console.log(`Running on port ${port}`);
 
