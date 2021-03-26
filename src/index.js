@@ -49,17 +49,18 @@ mongoose
     console.log('Inserting fake data in mongo...');
     faker.locale = 'pt_BR';
     const Respondent = require('./features/respondent/respondent.model');
-    const service = require('./features/respondent/respondent.service');    
+    const service = require('./features/respondent/respondent.service');
+    const cpfs = require('./mocks/cpf.list');    
 
     // service.deleteAll();
 
     for (let index = 0; index < 1000; index++) {
       const respondent = new Respondent({
         identifier: faker.random.number(),
-        type: faker.random.arrayElement(['EMPLOYEE', 'CANDIDATE', 'INTERN', 'VISITOR'],1),
+        type: faker.random.arrayElement(cpfs,1),
         registration: faker.random.number(5000),
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-        cpf: faker.random.cpf(true),
+        cpf: faker.random.arrayElement(['EMPLOYEE', 'CANDIDATE', 'INTERN', 'VISITOR'],1),
         email: faker.internet.email(),
         phone: faker.phone.phoneNumber(),
         admissionDate: faker.date.past(),
