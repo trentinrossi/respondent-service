@@ -24,7 +24,7 @@ RUN npm install
 COPY . .
 
 # Your app binds to port 4002 so you'll use the EXPOSE instruction to have it mapped by the docker daemon:
-EXPOSE 4002
+EXPOSE 4001
 
 # Last but not least, define the command to run your app using CMD which defines your runtime. 
 # Here we will use node server.js to start your server:
